@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Periódico Luis Amigó</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f1e1;
+    }
+
+    header {
+      background-color: #800000;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    header img {
+      height: 60px;
+      margin-left: 20px;
+    }
+
+    header h1 {
+      flex-grow: 1;
+      margin: 0;
+      text-align: center;
+      font-size: 1.5em;
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 10px;
+      flex-wrap: wrap;
+    }
+
+    .search-container input {
+      padding: 10px;
+      width: 300px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: 1px solid #800000;
+    }
+
+    .button-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin: 20px;
+    }
+
+    .edicion-btn {
+      background-color: #fff;
+      border: 2px solid #800000;
+      padding: 20px;
+      cursor: pointer;
+      width: 250px;
+      text-align: left;
+      font-size: 18px;
+      border-radius: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .descripcion {
+      display: block;
+      font-size: 12px;
+      color: #555;
+      margin-top: 10px;
+      max-height: 50px;
+      overflow: hidden;
+    }
+
+    .mostrar-mas {
+      font-size: 12px;
+      color: #007bff;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      text-decoration: underline;
+      display: inline;
+    }
+
+    .viewer {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      margin: 20px;
+    }
+
+    .viewer img {
+      max-width: 100%;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      cursor: zoom-in;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .nav-buttons button {
+      background-color: #444;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 50px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .categoria {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background-color: #800000;
+      color: white;
+      padding: 5px 10px;
+      font-size: 14px;
+      border-radius: 5px;
+    }
+
+    .menu-button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      margin-right: 20px;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: white;
+      background-color: #800000;
+      padding: 20px;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 600px) {
+      .search-container input {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <img src="https://q10storage.blob.core.windows.net/q10academico-public/087527047850/087527047850.png?nocache" alt="Logo Luis Amigó">
+    <h1>Periódico Luis Amigó</h1>
+    <div>
+      <button onclick="mostrarCatalogo()" class="menu-button">🏠</button>
+    </div>
+  </header>
+
+  <div class="search-container" id="search-bar">
+    <button onclick="mostrarCatalogo()" style="background: none; border: none; color: #800000; font-size: 16px; cursor: pointer;">Catálogo</button>
+    <input type="text" id="searchInput" onkeyup="filtrarEdiciones()" placeholder="Buscar por palabra clave...">
+  </div>
+
+  <div class="button-container" id="catalogo">
+    <div class="edicion-btn" onclick="abrirEdicion(0)">
+      <strong>4 de junio - Doceava edición</strong>
+      <div class="descripcion" id="desc-corto">
+        “papa francisco”, “editorial la esperanza”, “las interclases”, “dia de la danza, dia de la enfermera, dia de la madre”, “dia del padre, dia del trabajo”, “dia del medio ambiente, dia del profesor”, “un periodico fisico”, “la semana santa en el colegio, dia del idioma”, “dia del niño”
+      </div>
+      <span class="mostrar-mas" onclick="event.stopPropagation(); toggleDescripcion(this)">Mostrar más</span>
+    </div>
+  </div>
+
+  <div class="viewer" id="visor">
+    <div class="categoria" id="categoria"></div>
+    <img id="pagina" src="" alt="Página del periódico" onclick="ampliarImagen(this)">
+    <div class="nav-buttons">
+      <button onclick="cambiarPagina(-1)">◀</button>
+      <button onclick="cambiarPagina(1)">▶</button>
+    </div>
+  </div>
+  <script>
+    const paginas = [
+      { categoria: "Portada", image: "https://i.imgur.com/O9wPVo6.jpg" },
+      { categoria: "Editorial", image: "https://i.imgur.com/PHdEmXI.jpg" },
+      { categoria: "Noticias de la actualidad", image: "https://i.imgur.com/tBSawtu.jpg" },
+      { categoria: "Deporte", image: "https://i.imgur.com/Uc0yvbL.jpg" },
+      { categoria: "Fechas importantes", image: "https://i.imgur.com/G6LWpvP.jpg" },
+      { categoria: "Fechas importantes", image: "https://i.imgur.com/dVkSTgf.jpg" },
+      { categoria: "Fechas importantes", image: "https://i.imgur.com/gkFIfeb.jpg" },
+      { categoria: "Propuestas institucionales", image: "https://i.imgur.com/L2739cv.jpg" },
+      { categoria: "Eventos especiales", image: "https://i.imgur.com/ByM1EO9.jpg" },
+      { categoria: "Eventos especiales", image: "https://i.imgur.com/4XMl5eO.jpg" }
+    ];
+
+    let paginaActual = 0;
+
+    function mostrarCatalogo() {
+      document.getElementById('catalogo').style.display = 'flex';
+      document.getElementById('visor').style.display = 'none';
+      document.getElementById('search-bar').style.display = 'flex';
+    }
+
+    function abrirEdicion(indice) {
+      paginaActual = 0;
+      document.getElementById('catalogo').style.display = 'none';
+      document.getElementById('visor').style.display = 'flex';
+      document.getElementById('search-bar').style.display = 'none';
+      mostrarPagina();
+    }
+
+    function mostrarPagina() {
+      const pagina = paginas[paginaActual];
+      const img = document.getElementById('pagina');
+      img.src = pagina.image;
+      document.getElementById('categoria').textContent = pagina.categoria;
+    }
+
+    function cambiarPagina(cambio) {
+      const nuevaPagina = paginaActual + cambio;
+      if (nuevaPagina >= 0 && nuevaPagina < paginas.length) {
+        paginaActual = nuevaPagina;
+        mostrarPagina();
+      }
+    }
+
+    function filtrarEdiciones() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const botones = document.querySelectorAll(".button-container .edicion-btn");
+      botones.forEach(btn => {
+        const texto = btn.textContent.toLowerCase();
+        btn.style.display = texto.includes(input) ? "block" : "none";
+      });
+    }
+
+    function toggleDescripcion(btn) {
+      const descripcion = btn.previousElementSibling;
+      if (descripcion.style.maxHeight === "none") {
+        descripcion.style.maxHeight = "50px";
+        btn.textContent = "Mostrar más";
+      } else {
+        descripcion.style.maxHeight = "none";
+        btn.textContent = "Mostrar menos";
+      }
+    }
+
+    function ampliarImagen(img) {
+      if (img.style.maxWidth === "100%") {
+        img.style.maxWidth = "200%";
+        img.style.cursor = "zoom-out";
+      } else {
+        img.style.maxWidth = "100%";
+        img.style.cursor = "zoom-in";
+      }
+    }
+  </script>
+</body>
+</html>
+
