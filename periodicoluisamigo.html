@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Periódico Luis Amigó</title>
+  <style>
+    :root {
+      --vinotinto: #7b1e2f;
+      --vinotinto-oscuro: #511320;
+      --dorado: #d8b36a;
+      --crema: #f6f0e6;
+      --papel: #fffdf9;
+      --tinta: #22191a;
+      --gris: #6e5c5f;
+      --borde: rgba(81, 19, 32, 0.12);
+      --sombra: 0 20px 45px rgba(50, 22, 28, 0.12);
+      --radio-lg: 24px;
+      --radio-md: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--tinta);
+      background:
+        radial-gradient(circle at top left, rgba(216, 179, 106, 0.22), transparent 28%),
+        radial-gradient(circle at top right, rgba(123, 30, 47, 0.14), transparent 24%),
+        linear-gradient(180deg, #f9f4ec 0%, #f3eadb 100%);
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .page-shell {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 56px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 28px;
+      border-radius: 32px;
+      background:
+        linear-gradient(135deg, rgba(81, 19, 32, 0.97), rgba(123, 30, 47, 0.9)),
+        var(--vinotinto);
+      color: #fff8ef;
+      box-shadow: var(--sombra);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto -60px -80px auto;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: rgba(216, 179, 106, 0.16);
+      filter: blur(8px);
+    }
+
+    .hero-top {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .brand-logo {
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      padding: 8px;
+      border-radius: 20px;
+      background: rgba(255, 248, 239, 0.12);
+      border: 1px solid rgba(255, 248, 239, 0.2);
+    }
+
+    .brand-copy h1 {
+      margin: 0;
+      font-size: clamp(1.8rem, 3.8vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-badge {
+      flex-shrink: 0;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(255, 248, 239, 0.12);
+      border: 1px solid rgba(255, 248, 239, 0.18);
+      font-size: 0.95rem;
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 22px;
+      margin-top: 24px;
+    }
+
+    .latest-card,
+    .about-card {
+      background: rgba(255, 248, 239, 0.08);
+      border: 1px solid rgba(255, 248, 239, 0.14);
+      border-radius: 26px;
+      padding: 22px;
+      backdrop-filter: blur(6px);
+    }
+
+    .section-kicker {
+      margin: 0 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.78rem;
+      color: rgba(255, 248, 239, 0.68);
+    }
+
+    .latest-card h2,
+    .about-card h2 {
+      margin: 0;
+      font-size: clamp(1.35rem, 2vw, 1.8rem);
+    }
+
+    .latest-card p,
+    .about-card p {
+      color: rgba(255, 248, 239, 0.86);
+    }
+
+    .latest-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 14px 0 16px;
+    }
+
+    .pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 248, 239, 0.12);
+      border: 1px solid rgba(255, 248, 239, 0.16);
+      font-size: 0.92rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 13px 18px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: #fff6e7;
+      color: var(--vinotinto-oscuro);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.14);
+      font-weight: 700;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: #fff8ef;
+      border: 1px solid rgba(255, 248, 239, 0.26);
+    }
+
+    .about-card p {
+      line-height: 1.7;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+      margin: 28px 0 20px;
+    }
+
+    .search-box {
+      flex: 1 1 280px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 15px 18px;
+      border-radius: 18px;
+      border: 1px solid var(--borde);
+      background: rgba(255, 253, 249, 0.94);
+      box-shadow: 0 12px 24px rgba(56, 28, 32, 0.06);
+      outline: none;
+    }
+
+    .search-box input:focus {
+      border-color: rgba(123, 30, 47, 0.4);
+      box-shadow: 0 12px 24px rgba(56, 28, 32, 0.1);
+    }
+
+    .toolbar-note {
+      color: var(--gris);
+      font-size: 0.95rem;
+    }
+
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .edition-card {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid var(--borde);
+      border-radius: var(--radio-lg);
+      background: rgba(255, 253, 249, 0.94);
+      box-shadow: 0 18px 34px rgba(56, 28, 32, 0.08);
+      min-height: 100%;
+    }
+
+    .edition-cover {
+      aspect-ratio: 4 / 5;
+      background: linear-gradient(180deg, rgba(123, 30, 47, 0.06), rgba(123, 30, 47, 0.12));
+      overflow: hidden;
+    }
+
+    .edition-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .edition-content {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 18px;
+      flex: 1;
+    }
+
+    .edition-content h3 {
+      margin: 0;
+      font-size: 1.22rem;
+    }
+
+    .edition-date {
+      color: var(--vinotinto);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .edition-summary {
+      margin: 0;
+      color: #4a3d40;
+      line-height: 1.55;
+      flex: 1;
+    }
+
+    .edition-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .edition-tags span {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #f5ece7;
+      color: var(--vinotinto);
+      font-size: 0.84rem;
+    }
+
+    .edition-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ghost-link {
+      color: var(--vinotinto);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .viewer-shell[hidden] {
+      display: none;
+    }
+
+    .viewer-shell {
+      margin-top: 26px;
+      border-radius: 30px;
+      padding: 20px;
+      background: rgba(255, 253, 249, 0.96);
+      border: 1px solid var(--borde);
+      box-shadow: var(--sombra);
+    }
+
+    .viewer-top {
+      display: flex;
+      gap: 16px;
+      align-items: start;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .viewer-top h2 {
+      margin: 6px 0 0;
+      font-size: clamp(1.35rem, 2vw, 2rem);
+    }
+
+    .viewer-top p {
+      margin: 8px 0 0;
+      color: var(--gris);
+    }
+
+    .viewer-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .viewer-controls .btn {
+      padding: 11px 16px;
+      border-radius: 16px;
+    }
+
+    .btn-dark {
+      background: var(--vinotinto);
+      color: #fff8ef;
+      font-weight: 700;
+    }
+
+    .zoom-control {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--gris);
+    }
+
+    .zoom-control input[type="range"] {
+      width: 170px;
+      accent-color: var(--vinotinto);
+    }
+
+    .page-stage {
+      display: grid;
+      grid-template-columns: 68px 1fr 68px;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .mobile-nav {
+      display: none;
+    }
+
+    .nav-circle {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto;
+      border-radius: 50%;
+      border: 0;
+      background: var(--vinotinto);
+      color: #fff8ef;
+      font-size: 1.5rem;
+      cursor: pointer;
+      box-shadow: 0 10px 18px rgba(81, 19, 32, 0.18);
+    }
+
+    .nav-circle:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .page-frame {
+      background:
+        linear-gradient(180deg, rgba(123, 30, 47, 0.04), rgba(123, 30, 47, 0.02)),
+        var(--crema);
+      border-radius: 26px;
+      border: 1px solid rgba(81, 19, 32, 0.09);
+      padding: 18px;
+      min-height: 60vh;
+      overflow: auto;
+    }
+
+    .page-image {
+      display: block;
+      width: min(calc(100% * var(--zoom, 1)), calc(980px * var(--zoom, 1)));
+      max-width: none;
+      margin: 0 auto;
+      border-radius: 16px;
+      border: 1px solid rgba(81, 19, 32, 0.12);
+      box-shadow: 0 18px 30px rgba(47, 28, 29, 0.12);
+      background: white;
+    }
+
+    .thumb-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(78px, 1fr));
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .thumb-btn {
+      padding: 0;
+      border: 2px solid transparent;
+      border-radius: 16px;
+      overflow: hidden;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .thumb-btn.active {
+      border-color: var(--vinotinto);
+      box-shadow: 0 10px 18px rgba(81, 19, 32, 0.14);
+    }
+
+    .thumb-btn img {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+    }
+
+    .empty-state {
+      padding: 26px;
+      text-align: center;
+      color: var(--gris);
+      border-radius: 20px;
+      background: rgba(255, 253, 249, 0.72);
+      border: 1px dashed rgba(81, 19, 32, 0.18);
+    }
+
+    .muted {
+      color: var(--gris);
+    }
+
+    @media (max-width: 860px) {
+      .hero {
+        padding: 22px;
+      }
+
+      .hero-top,
+      .viewer-top,
+      .viewer-controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-badge,
+      .zoom-control {
+        margin-left: 0;
+      }
+
+      .page-stage {
+        grid-template-columns: 1fr;
+      }
+
+      .page-stage > .nav-row-mobile {
+        display: none;
+      }
+
+      .mobile-nav {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      .mobile-nav .nav-circle {
+        width: 100%;
+        height: auto;
+        border-radius: 14px;
+        padding: 10px 14px;
+        font-size: 1.15rem;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page-shell {
+        width: min(100% - 20px, 1180px);
+        padding-top: 10px;
+      }
+
+      .hero,
+      .viewer-shell {
+        border-radius: 22px;
+      }
+
+      .brand {
+        gap: 12px;
+        align-items: center;
+      }
+
+      .brand-logo {
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+      }
+
+      .hero {
+        padding: 18px;
+      }
+
+      .hero-top {
+        gap: 14px;
+      }
+
+      .brand-copy h1 {
+        font-size: 1.7rem;
+      }
+
+      .hero-badge {
+        align-self: flex-start;
+        padding: 8px 12px;
+        font-size: 0.84rem;
+      }
+
+      .hero-grid {
+        gap: 14px;
+        margin-top: 18px;
+      }
+
+      .latest-card,
+      .about-card {
+        padding: 18px;
+        border-radius: 20px;
+      }
+
+      .latest-card h2,
+      .about-card h2 {
+        font-size: 1.2rem;
+      }
+
+      .section-kicker {
+        margin-bottom: 8px;
+        font-size: 0.72rem;
+      }
+
+      .hero-actions {
+        gap: 10px;
+      }
+
+      .hero-actions .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .toolbar {
+        gap: 10px;
+        margin: 22px 0 16px;
+      }
+
+      .search-box input {
+        padding: 13px 15px;
+        border-radius: 16px;
+      }
+
+      .toolbar-note {
+        width: 100%;
+        font-size: 0.88rem;
+      }
+
+      .catalog-grid {
+        gap: 14px;
+      }
+
+      .edition-card {
+        border-radius: 20px;
+      }
+
+      .edition-cover {
+        aspect-ratio: 16 / 11;
+      }
+
+      .edition-content {
+        gap: 10px;
+        padding: 15px;
+      }
+
+      .edition-content h3 {
+        font-size: 1.08rem;
+      }
+
+      .edition-summary {
+        font-size: 0.95rem;
+        line-height: 1.45;
+      }
+
+      .edition-tags {
+        gap: 6px;
+      }
+
+      .edition-tags span {
+        font-size: 0.78rem;
+        padding: 5px 9px;
+      }
+
+      .edition-actions {
+        gap: 8px;
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .edition-actions .btn {
+        width: 100%;
+      }
+
+      .viewer-shell {
+        padding: 14px;
+      }
+
+      .viewer-top {
+        margin-bottom: 14px;
+      }
+
+      .viewer-top h2 {
+        font-size: 1.2rem;
+      }
+
+      .viewer-controls {
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      .viewer-controls .btn {
+        width: 100%;
+        text-align: center;
+      }
+
+      .zoom-control {
+        width: 100%;
+        padding: 10px 12px;
+        border-radius: 16px;
+        background: #f8efe8;
+        justify-content: space-between;
+      }
+
+      .zoom-control input[type="range"] {
+        width: 100%;
+      }
+
+      .page-stage {
+        gap: 12px;
+      }
+
+      .mobile-nav {
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .mobile-nav .nav-circle {
+        padding: 9px 12px;
+        border-radius: 12px;
+        font-size: 1rem;
+        box-shadow: 0 8px 14px rgba(81, 19, 32, 0.14);
+      }
+
+      .page-frame {
+        padding: 10px;
+        min-height: 42vh;
+        border-radius: 18px;
+      }
+
+      .page-image {
+        border-radius: 12px;
+      }
+
+      .thumb-strip {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .thumb-btn {
+        border-radius: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="hero">
+      <div class="hero-top">
+        <div class="brand">
+          <img
+            class="brand-logo"
+            src="https://q10storage.blob.core.windows.net/q10academico-public/087527047850/087527047850.png"
+            alt="Escudo de la Institución Educativa Luis Amigó"
+            referrerpolicy="no-referrer"
+          >
+          <div class="brand-copy">
+            <h1>Periódico Luis Amigó</h1>
+          </div>
+        </div>
+        <div class="hero-badge" id="editionCount">0 ediciones publicadas</div>
+      </div>
+
+      <div class="hero-grid">
+        <section class="latest-card">
+          <p class="section-kicker">Última edición</p>
+          <h2 id="latestTitle">Cargando...</h2>
+          <div class="latest-meta">
+            <span class="pill" id="latestDate"></span>
+            <span class="pill" id="latestPages"></span>
+          </div>
+          <p id="latestSummary"></p>
+          <div class="hero-actions">
+            <button class="btn btn-primary" id="latestReadBtn" type="button">Leer la edición más reciente</button>
+            <button class="btn btn-secondary" type="button" onclick="document.getElementById('catalogSection').scrollIntoView({ behavior: 'smooth' })">Ver todas las ediciones</button>
+          </div>
+        </section>
+
+        <section class="about-card">
+          <p class="section-kicker">Edición digital</p>
+          <h2>Un archivo para conservar la memoria del colegio</h2>
+          <p>Cada edición reúne noticias, celebraciones, actividades y momentos importantes de la institución. El catálogo está pensado para que cualquier persona pueda entrar, ubicar una edición rápido y leerla con comodidad desde el celular o desde computador.</p>
+        </section>
+      </div>
+    </header>
+
+    <main>
+      <section id="catalogSection">
+        <div class="toolbar">
+          <label class="search-box" for="searchInput">
+            <input type="search" id="searchInput" placeholder="Buscar por fecha, edición o tema">
+          </label>
+          <div class="toolbar-note">Las ediciones más nuevas aparecen primero.</div>
+        </div>
+
+        <div class="catalog-grid" id="catalogGrid"></div>
+        <div class="empty-state" id="emptyState" hidden>No se encontraron ediciones con ese texto.</div>
+      </section>
+
+      <section class="viewer-shell" id="viewerShell" hidden>
+        <div class="viewer-top">
+          <div>
+            <div class="pill" id="viewerDate">Fecha</div>
+            <h2 id="viewerTitle">Título de la edición</h2>
+            <p id="viewerMeta">Página 1 de 1</p>
+          </div>
+          <button class="btn btn-secondary" type="button" id="backToCatalogBtn">Volver al catálogo</button>
+        </div>
+
+        <div class="viewer-controls">
+          <div class="zoom-control">
+            <label for="zoomRange">Zoom</label>
+            <input type="range" id="zoomRange" min="80" max="180" step="5" value="100">
+            <span id="zoomLabel">100%</span>
+          </div>
+        </div>
+
+        <div class="page-stage">
+          <div class="nav-row-mobile">
+            <button class="nav-circle" id="prevBtn" type="button" aria-label="Página anterior">‹</button>
+          </div>
+
+          <div class="page-frame" id="pageFrame">
+            <img class="page-image" id="pageImage" src="" alt="Página actual de la edición" referrerpolicy="no-referrer">
+          </div>
+
+          <div class="nav-row-mobile">
+            <button class="nav-circle" id="nextBtn" type="button" aria-label="Página siguiente">›</button>
+          </div>
+        </div>
+
+        <div class="mobile-nav">
+          <button class="nav-circle" id="prevBtnMobile" type="button" aria-label="Página anterior">Anterior</button>
+          <button class="nav-circle" id="nextBtnMobile" type="button" aria-label="Página siguiente">Siguiente</button>
+        </div>
+
+        <div class="thumb-strip" id="thumbStrip"></div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    /*
+      INSTRUCCIONES PARA SUBIR UNA NUEVA EDICIÓN
+      1. Sube todas las páginas/imágenes de la edición y copia sus enlaces.
+      2. En el arreglo "ediciones" pega una copia de la primera edición.
+      3. Cambia titulo, fecha, resumen, temas e imagenes.
+      4. Deja la portada como la primera imagen del arreglo "imagenes".
+      5. Si quieres que la edición aparezca como la más reciente, déjala al inicio.
+    */
+    const ediciones = [
+      {
+        titulo: "Quinceava edición",
+        fecha: "24 de marzo de 2026",
+        resumen: "Nueva edición con editorial, jornada de democracia estudiantil, cambios en el ICFES, contenidos religiosos, vida y vocación de los frailes, interclases, estudiantes destacados y una sección de entretenimiento.",
+        temas: ["Editorial", "Democracia", "ICFES", "Interclases"],
+        imagenes: [
+          "pdf-pages/page-1.png",
+          "pdf-pages/page-2.png",
+          "pdf-pages/page-3.png",
+          "pdf-pages/page-4.png",
+          "pdf-pages/page-5.png",
+          "pdf-pages/page-6.png",
+          "pdf-pages/page-7.png",
+          "pdf-pages/page-8.png"
+        ]
+      },
+      {
+        titulo: "Catorceava edición",
+        fecha: "29 de enero",
+        resumen: "Edición especial con temas como los 25 años de la institución, resultados ICFES, concurso de deletreo, proyección universitaria, auditorio, novenas, símbolos y actividades destacadas del cierre de año.",
+        temas: ["25 años", "ICFES", "Auditorio", "Novenas"],
+        imagenes: [
+          "https://i.imgur.com/eVIn2jm.jpeg",
+          "https://i.imgur.com/1ywvl8f.jpeg",
+          "https://i.imgur.com/1wCIwFP.jpeg",
+          "https://i.imgur.com/AbIxXFl.jpeg",
+          "https://i.imgur.com/jSeWsd7.jpeg",
+          "https://i.imgur.com/vGxv3mj.jpeg",
+          "https://i.imgur.com/gu8d9PN.jpeg",
+          "https://i.imgur.com/45wbttx.jpeg"
+        ]
+      },
+      {
+        titulo: "Treceava edición",
+        fecha: "5 de septiembre",
+        resumen: "Incluye la Feria de las Ciencias, avances del auditorio, conversatorio político, Antioqueñidad, Feria de las Flores y beneficios del uso de la piscina.",
+        temas: ["Ciencias", "Auditorio", "Antioqueñidad", "Piscina"],
+        imagenes: [
+          "https://i.imgur.com/mWPOJeR.jpeg",
+          "https://i.imgur.com/A2vp6O8.jpeg",
+          "https://i.imgur.com/ifXKl6b.jpeg",
+          "https://i.imgur.com/H1GLjqV.jpeg",
+          "https://i.imgur.com/IQO9LlB.jpeg",
+          "https://i.imgur.com/VK1A6wg.jpeg",
+          "https://i.imgur.com/vGoHyME.jpeg"
+        ]
+      },
+      {
+        titulo: "Doceava edición",
+        fecha: "4 de junio",
+        resumen: "Reúne noticias sobre el papa Francisco, editorial La Esperanza, interclases, celebraciones institucionales, Semana Santa, Día del Idioma, Día del Niño y más actividades del colegio.",
+        temas: ["Interclases", "Editorial", "Semana Santa", "Día del Idioma"],
+        imagenes: [
+          "https://i.imgur.com/O9wPVo6.jpg",
+          "https://i.imgur.com/PHdEmXI.jpg",
+          "https://i.imgur.com/tBSawtu.jpg",
+          "https://i.imgur.com/Uc0yvbL.jpg",
+          "https://i.imgur.com/G6LWpvP.jpg",
+          "https://i.imgur.com/dVkSTgf.jpg",
+          "https://i.imgur.com/gkFIfeb.jpg",
+          "https://i.imgur.com/L2739cv.jpg",
+          "https://i.imgur.com/ByM1EO9.jpg",
+          "https://i.imgur.com/4XMl5eO.jpg"
+        ]
+      }
+    ];
+
+    const catalogGrid = document.getElementById("catalogGrid");
+    const emptyState = document.getElementById("emptyState");
+    const searchInput = document.getElementById("searchInput");
+    const viewerShell = document.getElementById("viewerShell");
+    const pageImage = document.getElementById("pageImage");
+    const pageFrame = document.getElementById("pageFrame");
+    const viewerTitle = document.getElementById("viewerTitle");
+    const viewerDate = document.getElementById("viewerDate");
+    const viewerMeta = document.getElementById("viewerMeta");
+    const thumbStrip = document.getElementById("thumbStrip");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const prevBtnMobile = document.getElementById("prevBtnMobile");
+    const nextBtnMobile = document.getElementById("nextBtnMobile");
+    const zoomRange = document.getElementById("zoomRange");
+    const zoomLabel = document.getElementById("zoomLabel");
+    let indiceEdicionActual = 0;
+    let indicePaginaActual = 0;
+
+    function renderHero() {
+      const ultima = ediciones[0];
+      document.getElementById("editionCount").textContent = `${ediciones.length} ediciones publicadas`;
+      document.getElementById("latestTitle").textContent = ultima.titulo;
+      document.getElementById("latestDate").textContent = ultima.fecha;
+      document.getElementById("latestPages").textContent = `${ultima.imagenes.length} páginas`;
+      document.getElementById("latestSummary").textContent = ultima.resumen;
+      document.getElementById("latestReadBtn").addEventListener("click", () => abrirEdicion(0));
+    }
+
+    function crearTarjeta(edicion, indice) {
+      const article = document.createElement("article");
+      article.className = "edition-card";
+      article.dataset.search = [edicion.titulo, edicion.fecha, edicion.resumen, edicion.temas.join(" ")].join(" ").toLowerCase();
+
+      const tags = edicion.temas
+        .slice(0, 4)
+        .map((tema) => `<span>${tema}</span>`)
+        .join("");
+
+      article.innerHTML = `
+        <div class="edition-cover">
+          <img src="${edicion.imagenes[0]}" alt="Portada de ${edicion.titulo}" referrerpolicy="no-referrer">
+        </div>
+        <div class="edition-content">
+          <div class="edition-date">${edicion.fecha}</div>
+          <h3>${edicion.titulo}</h3>
+          <p class="edition-summary">${edicion.resumen}</p>
+          <div class="edition-tags">${tags}</div>
+          <div class="edition-actions">
+            <button class="btn btn-dark" type="button">Leer edición</button>
+            <span class="muted">${edicion.imagenes.length} páginas</span>
+          </div>
+        </div>
+      `;
+
+      article.querySelector("button").addEventListener("click", () => abrirEdicion(indice));
+      return article;
+    }
+
+    function renderCatalogo(lista = ediciones) {
+      catalogGrid.innerHTML = "";
+
+      if (!lista.length) {
+        emptyState.hidden = false;
+        return;
+      }
+
+      emptyState.hidden = true;
+      lista.forEach((edicion) => {
+        const indiceReal = ediciones.indexOf(edicion);
+        catalogGrid.appendChild(crearTarjeta(edicion, indiceReal));
+      });
+    }
+
+    function actualizarVisor() {
+      const edicion = ediciones[indiceEdicionActual];
+      const imagen = edicion.imagenes[indicePaginaActual];
+
+      viewerTitle.textContent = edicion.titulo;
+      viewerDate.textContent = edicion.fecha;
+      viewerMeta.textContent = `Página ${indicePaginaActual + 1} de ${edicion.imagenes.length}`;
+      pageImage.src = imagen;
+      pageImage.alt = `${edicion.titulo}, página ${indicePaginaActual + 1}`;
+
+      prevBtn.disabled = indicePaginaActual === 0;
+      nextBtn.disabled = indicePaginaActual === edicion.imagenes.length - 1;
+      prevBtnMobile.disabled = prevBtn.disabled;
+      nextBtnMobile.disabled = nextBtn.disabled;
+
+      thumbStrip.innerHTML = "";
+      edicion.imagenes.forEach((thumb, indice) => {
+        const btn = document.createElement("button");
+        btn.className = `thumb-btn${indice === indicePaginaActual ? " active" : ""}`;
+        btn.type = "button";
+        btn.setAttribute("aria-label", `Ir a la página ${indice + 1}`);
+        btn.innerHTML = `<img src="${thumb}" alt="Miniatura de la página ${indice + 1}" referrerpolicy="no-referrer">`;
+        btn.addEventListener("click", () => {
+          indicePaginaActual = indice;
+          actualizarVisor();
+        });
+        thumbStrip.appendChild(btn);
+      });
+    }
+
+    function abrirEdicion(indice) {
+      indiceEdicionActual = indice;
+      indicePaginaActual = 0;
+      viewerShell.hidden = false;
+      actualizarVisor();
+      viewerShell.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function cambiarPagina(direccion) {
+      const total = ediciones[indiceEdicionActual].imagenes.length - 1;
+      const nuevoIndice = indicePaginaActual + direccion;
+
+      if (nuevoIndice < 0 || nuevoIndice > total) {
+        return;
+      }
+
+      indicePaginaActual = nuevoIndice;
+      actualizarVisor();
+    }
+
+    function aplicarZoom(valor) {
+      const zoom = Number(valor) / 100;
+      pageFrame.style.setProperty("--zoom", zoom);
+      zoomLabel.textContent = `${valor}%`;
+    }
+
+    function filtrarEdiciones() {
+      const texto = searchInput.value.trim().toLowerCase();
+
+      if (!texto) {
+        renderCatalogo(ediciones);
+        return;
+      }
+
+      const filtradas = ediciones.filter((edicion) =>
+        [edicion.titulo, edicion.fecha, edicion.resumen, edicion.temas.join(" ")]
+          .join(" ")
+          .toLowerCase()
+          .includes(texto)
+      );
+
+      renderCatalogo(filtradas);
+    }
+
+    document.getElementById("backToCatalogBtn").addEventListener("click", () => {
+      document.getElementById("catalogSection").scrollIntoView({ behavior: "smooth" });
+    });
+
+    prevBtn.addEventListener("click", () => cambiarPagina(-1));
+    nextBtn.addEventListener("click", () => cambiarPagina(1));
+    prevBtnMobile.addEventListener("click", () => cambiarPagina(-1));
+    nextBtnMobile.addEventListener("click", () => cambiarPagina(1));
+    searchInput.addEventListener("input", filtrarEdiciones);
+    zoomRange.addEventListener("input", (event) => aplicarZoom(event.target.value));
+
+    document.addEventListener("keydown", (event) => {
+      if (viewerShell.hidden) {
+        return;
+      }
+
+      if (event.key === "ArrowLeft") {
+        cambiarPagina(-1);
+      }
+
+      if (event.key === "ArrowRight") {
+        cambiarPagina(1);
+      }
+    });
+
+    renderHero();
+    renderCatalogo();
+    aplicarZoom(100);
+  </script>
+</body>
+</html>
